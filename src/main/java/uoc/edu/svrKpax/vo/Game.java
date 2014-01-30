@@ -1,16 +1,31 @@
 package uoc.edu.svrKpax.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Entity
 @Table(name = "Game")
+
+
 public class Game implements Serializable {
 
 	/**
@@ -22,6 +37,9 @@ public class Game implements Serializable {
 	private String name;
 	private String secretGame;
 	private String privateKey;
+	private int idCategory;
+	private Date creationDate;
+	
 
 	@Id
 	@Column(name = "idGame")
@@ -32,7 +50,7 @@ public class Game implements Serializable {
 	public void setIdGame(int idGame) {
 		this.idGame = idGame;
 	}
-
+	
 	@Column(name = "grantPublicAccess")
 	public int getPublicAcces() {
 		return publicAcces;
@@ -68,5 +86,24 @@ public class Game implements Serializable {
 	public void setPrivateKey(String privateKey) {
 		this.privateKey = privateKey;
 	}
+	
+	@Column(name = "idCategory", nullable = true) //Set a "nullable=true" property only for installing on production environment. In normal case it should never be null.
+	public int getIdCategory() {
+		return idCategory;
+	}
 
+	public void setIdCategory(int idCategory) {
+		this.idCategory = idCategory;
+	}
+
+	@Column(name = "creationDate", nullable = true) //Set a "nullable=true" property only for installing on production environment. In normal case it should never be null.
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+	
+	
 }

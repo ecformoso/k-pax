@@ -9,6 +9,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import uoc.edu.svrKpax.vo.Game;
 
+import org.hibernate.*;
+
 public class GameDaoImpl extends HibernateDaoSupport implements GameDao {
 
 	@SuppressWarnings("unchecked")
@@ -42,5 +44,23 @@ public class GameDaoImpl extends HibernateDaoSupport implements GameDao {
 		return (Game) DataAccessUtils.uniqueResult(getHibernateTemplate()
 				.findByCriteria(criteria));
 	}
+	
+	@Override
+	public Game getGameByName(String name) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Game.class);
+		criteria.add(Restrictions.eq("name", name));
+		return (Game) DataAccessUtils.uniqueResult(getHibernateTemplate()
+				.findByCriteria(criteria));
+	}
 
+    @Override
+	public List<Game> getUserGames(String username) {
+		String SQL="SELECT g.* FROM `game` g, `gamedeveloper` gd, `user` u WHERE u.login=:username AND u.idUser = gd.idUser AND gd.idGame = g.idGame;";
+		SQLQuery query=getSession().createSQLQuery(SQL);
+    
+    	query.addEntity(Game.class);
+        query.setParameter("username", username);
+        List<Game> list= query.list();
+        return list;
+	}
 }
